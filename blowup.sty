@@ -6,7 +6,7 @@
 %%
 %% blowup.dtx  (with options: `package')
 %% 
-%%    Copyright (C) 2007
+%%    Copyright (C) 2007,2017-
 %%    Rolf Niepraschk, Rolf.Niepraschk@gmx.de
 %% 
 %%    This work may be distributed and/or modified under the
@@ -78,7 +78,7 @@
 \newcommand\BL@tempb{}
 \newcommand*\BL@strip@comma{}
 \def\BL@strip@comma#1,{#1}
-\newcommand*\BL@if@dimen@pair[1]{%
+\newcommand*\BL@is@dimen@pair[1]{%
   \expandafter\BL@@if@dimen@pair#1,\@nil
 }
 \newcommand*\BL@@if@dimen@pair{}
@@ -117,7 +117,7 @@
   \fi
 }
 \define@key{BL@}{paper}{%
-  \BL@if@dimen@pair{#1}{%
+  \BL@is@dimen@pair{#1}{%
     \global\sPaperWidth=\BL@tempa\relax
     \global\sPaperHeight=\BL@tempb\relax
   }{%
@@ -147,7 +147,7 @@
   \def\BL@l{\hss}\def\BL@r{\hss}%
   \def\BL@o{\hss}\def\BL@i{\hss}%
   \def\BL@t{\vss}\def\BL@b{\vss}%
-  \BL@if@dimen@pair{#1}{%
+  \BL@is@dimen@pair{#1}{%
     \edef\BL@b{\vskip\BL@tempb}%
     \if@twoside
       \edef\BL@l{\noexpand\ifodd\value{page}%
@@ -205,7 +205,6 @@
 \AtBeginShipout{\BL@pageInit}
 \@onlypreamble\blowUp
 \AtBeginDocument{%
-  \let\Gm@checkdrivers=\relax
   \BL@pagesize@specials{\sPaperWidth}{\sPaperHeight}%
 }
 
