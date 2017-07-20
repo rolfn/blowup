@@ -1,0 +1,24 @@
+
+\listfiles
+\documentclass[paper=b6,fontsize=11pt,twoside]{scrartcl}
+\usepackage{showframe}
+
+\usepackage{blowup}
+\blowUp{paper=a4,pos={inside,top},noscale}
+
+\newcommand*\SEITE{%
+  \Huge
+  \noindent A \hfill B \hfill C 
+  \vfill
+  \noindent X \hfill Y \hfill Z \newpage}
+
+\begin{document}
+
+\SEITE
+\SEITE
+\SEITE
+\SEITE
+\SEITE
+
+\end{document}
+%---------------------------
