@@ -218,26 +218,26 @@
   \ifxetex
     \def\BL@pagesize@specials#1#2{%
       \PackageInfo{blowup}{Generating code for XeTeX}%
-      \@tempdima=#1\@tempdimb=#2 %
+      \@tempdima=#1 \@tempdimb=#2 %
       \AtBeginDvi{\special{papersize=\the\@tempdima,\the\@tempdimb}}%
       \pdfpagewidth=#1 \pdfpageheight=#2}%
   \else
-    \ifpdf
-      \PackageInfo{blowup}{Generating code for pdfTeX}%
+    \ifvtex
+      \PackageInfo{blowup}{Generating code for VTeX}%
       \def\BL@pagesize@specials#1#2{%
-        \pdfpagewidth=#1 \pdfpageheight=#2}%
+        \mediawidth=#1 \mediaheight=#2}%
     \else
-      \ifvtex
-        \PackageInfo{blowup}{Generating code for VTeX}%
+      \ifpdf
+        \PackageInfo{blowup}{Generating code for pdfTeX}%
         \def\BL@pagesize@specials#1#2{%
-          \mediawidth=#1 \mediaheight=#2}%
+          \pdfpagewidth=#1 \pdfpageheight=#2}%
       \else
         \PackageInfo{blowup}{Generating code for dvips}%
         \def\BL@pagesize@specials#1#2{%
-          \@tempdima=#1\@tempdimb=#2 %
-          \AtBeginDvi{\special{papersize=\the\@tempdima,\the\@tempdimb}}}%
+          \@tempdima=#1 \@tempdimb=#2 %
+          \AtBeginDvi{\special{papersize=\the\@tempdima,\the\@tempdimb}}}%      
       \fi
-    \fi
+    \fi    
   \fi
 \fi
 
