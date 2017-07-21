@@ -48,8 +48,10 @@
   \let\BL@restore@dimens=\relax
 }
 \providecommand*\vb@xt@{\vbox to}
-\newlength\sPaperWidth  \sPaperWidth=\paperwidth
-\newlength\sPaperHeight \sPaperHeight=\paperheight
+\newlength\tPaperWidth  \tPaperWidth=\paperwidth
+\newlength\tPaperHeight \tPaperHeight=\paperheight
+\newlength\oPaperWidth  \oPaperWidth=\z@
+\newlength\oPaperHeight \oPaperHeight=\z@
 \newcommand*\BL@@resize{}
 \newcommand*\BL@scalePage{%
   \setbox\AtBeginShipoutBox=\vbox{%
@@ -60,15 +62,15 @@
     \box\AtBeginShipoutBox\vss}%
   \let\BL@@resize=\@firstofone
   \ifBL@noscale\else
-    \def\BL@@resize##1{\resizebox{\sPaperWidth}{!}{##1}}%
+    \def\BL@@resize##1{\resizebox{\tPaperWidth}{!}{##1}}%
     \setbox\@tempboxa=\hbox{\BL@@resize{\copy\AtBeginShipoutBox}}%
-    \ifdim\ht\@tempboxa>\sPaperHeight
-      \def\BL@@resize##1{\resizebox{!}{\sPaperHeight}{##1}}%
+    \ifdim\ht\@tempboxa>\tPaperHeight
+      \def\BL@@resize##1{\resizebox{!}{\tPaperHeight}{##1}}%
     \fi
   \fi
-  \setbox\@tempboxa=\vb@xt@\sPaperHeight{%
+  \setbox\@tempboxa=\vb@xt@\tPaperHeight{%
     \kern\z@\BL@t
-    \hb@xt@\sPaperWidth{\BL@l\BL@@resize{\box\AtBeginShipoutBox}\BL@r}%
+    \hb@xt@\tPaperWidth{\BL@l\BL@@resize{\box\AtBeginShipoutBox}\BL@r}%
     \BL@b\kern\z@
   }%
   \setbox\AtBeginShipoutBox=\vbox{%
@@ -99,11 +101,11 @@
 }
 \newcommand*\BL@strip@x{}
 \def\BL@strip@x#1x{#1}
-\newcommand*\BL@if@factor[1]{%
-  \expandafter\BL@@if@factor#1x\@nil
+\newcommand*\BL@is@factor[1]{%
+  \expandafter\BL@@is@factor#1x\@nil
 }
-\newcommand*\BL@@if@factor{}
-\def\BL@@if@factor#1x#2\@nil{%
+\newcommand*\BL@@is@factor{}
+\def\BL@@is@factor#1x#2\@nil{%
   \edef\BL@tempa{#2}%
   \@tempswafalse
   \ifx\BL@tempa\@empty\else
@@ -116,24 +118,30 @@
     \expandafter\@secondoftwo
   \fi
 }
-\define@key{BL@}{paper}{%
+\newcommand*\BL@getDimens[3]{%
   \BL@is@dimen@pair{#1}{%
-    \global\sPaperWidth=\BL@tempa\relax
-    \global\sPaperHeight=\BL@tempb\relax
+    \global#2=\BL@tempa\relax
+    \global#3=\BL@tempb\relax
   }{%
-    \BL@if@factor{#1}{%
-      \global\sPaperWidth=\BL@tempa\paperwidth
-      \global\sPaperHeight=\BL@tempa\paperheight
+    \BL@is@factor{#1}{%
+      \global#2=\BL@tempa\paperwidth
+      \global#3=\BL@tempa\paperheight
     }{%
       \begingroup
         \KOMAoptions{paper=portrait,paper=#1}%
-        \global\sPaperWidth=\paperwidth
-        \global\sPaperHeight=\paperheight
+        \global#2=\paperwidth
+        \global#3=\paperheight
       \endgroup
     }%
   }%
-}%
-\newif\ifBL@noscale \BL@noscalefalse
+}
+\define@key{BL@}{origin}{%
+  \BL@getDimens{#1}{\oPaperWidth}{\oPaperHeight}%
+}
+\define@key{BL@}{target}{%
+  \BL@getDimens{#1}{\tPaperWidth}{\tPaperHeight}%
+}
+\newif\ifBL@noscale \BL@noscalefalse% TODO: kann weg!?
 \define@key{BL@}{noscale}[true]{%
   \csname BL@noscale#1\endcsname
 }
@@ -193,9 +201,9 @@
 \newcommand*\blowUp[1]{%
   \setkeys{BL@}{#1}%
   \ifBL@landscape
-    \@tempdima=\sPaperWidth
-    \global\sPaperWidth=\sPaperHeight
-    \global\sPaperHeight=\@tempdima
+    \@tempdima=\tPaperWidth
+    \global\tPaperWidth=\tPaperHeight
+    \global\tPaperHeight=\@tempdima
   \fi
   \AtBeginShipout{\BL@scalePage}%
   \gdef\blowUp##1{%
@@ -205,7 +213,7 @@
 \AtBeginShipout{\BL@pageInit}
 \@onlypreamble\blowUp
 \AtBeginDocument{%
-  \BL@pagesize@specials{\sPaperWidth}{\sPaperHeight}%
+  \BL@pagesize@specials{\tPaperWidth}{\tPaperHeight}%
 }
 
 \RequirePackage{ifxetex,ifluatex,ifpdf,ifvtex} 
