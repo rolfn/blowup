@@ -212,29 +212,28 @@
 \newcommand*\BL@pagesize@specials[2]{}
 \ifluatex
   \PackageInfo{blowup}{Generating code for LuaTeX}%
-  \def\BL@pagesize@specials#1#2{%
-    \pagewidth=#1 \pageheight=#2}%
+  \@ifundefined{pagewidth}{%
+    \def\BL@pagesize@specials#1#2{\pdfpagewidth=#1 \pdfpageheight=#2}%
+  }{%
+    \def\BL@pagesize@specials#1#2{\pagewidth=#1 \pageheight=#2}% 
+  }
 \else
   \ifxetex
-    \def\BL@pagesize@specials#1#2{%
-      \PackageInfo{blowup}{Generating code for XeTeX}%
-      \@tempdima=#1 \@tempdimb=#2 %
+    \PackageInfo{blowup}{Generating code for XeTeX}%
+    \def\BL@pagesize@specials#1#2{\@tempdima=#1 \@tempdimb=#2 %
       \AtBeginDvi{\special{papersize=\the\@tempdima,\the\@tempdimb}}%
       \pdfpagewidth=#1 \pdfpageheight=#2}%
   \else
     \ifvtex
       \PackageInfo{blowup}{Generating code for VTeX}%
-      \def\BL@pagesize@specials#1#2{%
-        \mediawidth=#1 \mediaheight=#2}%
+      \def\BL@pagesize@specials#1#2{\mediawidth=#1 \mediaheight=#2}%
     \else
       \ifpdf
         \PackageInfo{blowup}{Generating code for pdfTeX}%
-        \def\BL@pagesize@specials#1#2{%
-          \pdfpagewidth=#1 \pdfpageheight=#2}%
+        \def\BL@pagesize@specials#1#2{\pdfpagewidth=#1 \pdfpageheight=#2}%
       \else
         \PackageInfo{blowup}{Generating code for dvips}%
-        \def\BL@pagesize@specials#1#2{%
-          \@tempdima=#1 \@tempdimb=#2 %
+        \def\BL@pagesize@specials#1#2{\@tempdima=#1 \@tempdimb=#2 %
           \AtBeginDvi{\special{papersize=\the\@tempdima,\the\@tempdimb}}}%      
       \fi
     \fi    
