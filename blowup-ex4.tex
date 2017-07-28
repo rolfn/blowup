@@ -13,7 +13,7 @@
 % pdfinfo blowup-test.pdf
 
 \listfiles
-\documentclass[letterpaper,twoside]{article}
+\documentclass[paper=a4,landscape]{scrartcl}
 \usepackage{array,xcolor}
 
 % Only to show the source page size.
@@ -27,15 +27,16 @@
 \pagestyle{empty}
 
 \usepackage{blowup}% Load "blowup" as last package!
-\blowUp{target=a4,pos=c}% vert. and horiz. centered (default)
+\blowUp{target=a0,landscape,onepage}
 
 \begin{document}
 
 \null\vfill
 
-\huge\centering
+\Large\centering
 
-Letter-size document on A4-size paper
+The first page of a multipage A4-size document on \mbox{A0-size paper} 
+(useful for poster)
 
 \vfill
 
@@ -57,7 +58,7 @@ Letter-size document on A4-size paper
 
 \vfill
 
-\newpage\null 2nd page\dots
+\newpage\null 2nd page\,\dots
 
 \end{document}
 %---------------------------

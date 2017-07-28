@@ -19,8 +19,7 @@
 % Only to show the source page size.
 \usepackage{eso-pic}
 \AddToShipoutPicture{%
-  \AtPageLowerLeft{%
-    \textcolor{green!30}{\rule{\paperwidth}{\paperheight}}}%
+  \AtPageLowerLeft{\textcolor{green!30}{\rule{\paperwidth}{\paperheight}}}%
 }
 
 \renewcommand\familydefault{\sfdefault}
@@ -28,7 +27,7 @@
 \pagestyle{empty}
 
 \usepackage{blowup}% Load "blowup" as last package!
-\blowUp{target=letter,pos={o}}% outside aligned
+\blowUp{target=letter,pos=outside}% outside aligned
 
 \begin{document}
 
