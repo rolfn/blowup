@@ -13,7 +13,7 @@
 % pdfinfo blowup-test.pdf
 
 \listfiles
-\documentclass[a4paper,twoside]{article}
+\documentclass[a5paper,twoside]{article}
 \usepackage{array,xcolor}
 
 % Only to show the source page size.
@@ -28,15 +28,16 @@
 \pagestyle{empty}
 
 \usepackage{blowup}% Load "blowup" as last package!
-\blowUp{target=letter,pos={o}}% outside aligned
+\blowUp{origin={143mm,202mm},target=a5,pos={o,b}}% top and outside aligned
 
 \begin{document}
 
 \null\vfill
 
-\huge\centering
+\Large\centering
 
-A4-size document on letter-size paper
+A bit downscaled A5-size document on \mbox{A5-size paper} 
+(more space for binding)
 
 \vfill
 
