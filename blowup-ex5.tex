@@ -3,22 +3,22 @@
 \documentclass[paper=b6,fontsize=11pt,twoside]{scrartcl}
 \usepackage{showframe}
 
-\usepackage{blowup}
-\blowUp{target=a4,pos={outside,top},noscale}
-
-\newcommand*\SEITE{%
+\newcommand*\aPage{%
   \Huge
   \noindent A \hfill B \hfill C 
   \vfill
   \noindent X \hfill Y \hfill Z \newpage}
 
+\usepackage{blowup}
+\blowUp{target=a4,pos={outside,top},noscale}
+
 \begin{document}
 
-\SEITE
-\SEITE
-\SEITE
-\SEITE
-\SEITE
+\aPage
+\aPage
+\aPage
+\aPage
+\aPage
 
 \end{document}
 %---------------------------
