@@ -1,0 +1,64 @@
+
+%---------------------------
+% Rolf Niepraschk, Rolf.Niepraschk@gmx.de, 2017-07-28
+
+% lualatex blowup-test.tex
+% or
+% pdflatex blowup-test.tex
+% or
+% latex blowup-test.tex ; dvips blowup-test ; ps2pdf blowup-test.ps
+% or
+% vlatex blowup-test.tex
+%
+% pdfinfo blowup-test.pdf
+
+\listfiles
+\documentclass[letterpaper,twoside]{article}
+\usepackage{array,xcolor}
+
+% Only to show the source page size.
+\usepackage{eso-pic}
+\AddToShipoutPicture{%
+  \AtPageLowerLeft{%
+    \textcolor{green!30}{\rule{\paperwidth}{\paperheight}}}%
+}
+
+\renewcommand\familydefault{\sfdefault}
+\setlength\parindent{0pt}
+\pagestyle{empty}
+
+\usepackage{blowup}% Load "blowup" as last package!
+\blowUp{target=a4,pos={c}}% centered
+
+\begin{document}
+
+\null\vfill
+
+\huge\centering
+
+Letter-size document on A4 paper
+
+\vfill
+
+\setlength\extrarowheight{.5ex}
+\begin{tabular}{|>{\bfseries}l<{:}r<{\,mm}!{$\times$}r<{\,mm}|} \hline
+  letter    & 216 &  279 \\
+  legal     & 216 &  356 \\
+  executive & 184 &  267 \\
+  A8        &  52 &   74 \\
+  A7        &  74 &  105 \\
+  A6        & 105 &  148 \\
+  A5        & 148 &  210 \\
+  A4        & 210 &  297 \\
+  A3        & 297 &  420 \\
+  A2        & 420 &  594 \\
+  A1        & 594 &  841 \\
+  A0        & 841 & 1189 \\ \hline
+\end{tabular}
+
+\vfill
+
+\newpage\null 2nd page\dots
+
+\end{document}
+%---------------------------
