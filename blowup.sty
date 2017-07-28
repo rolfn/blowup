@@ -52,7 +52,7 @@
 \newlength\tPaperHeight \tPaperHeight=\paperheight
 \newlength\oPaperWidth  \oPaperWidth=\z@
 \newlength\oPaperHeight \oPaperHeight=\z@
-\newcommand*\BL@@resize{}
+\newcommand*\BL@resize[1]{#1}
 \newcommand*\BL@scalePage{%
   \setbox\AtBeginShipoutBox=\vbox{%
     \vskip1in\moveright1in\box\AtBeginShipoutBox}%
@@ -60,17 +60,21 @@
     \box\AtBeginShipoutBox\hss}%
   \setbox\AtBeginShipoutBox=\vb@xt@\paperheight{%
     \box\AtBeginShipoutBox\vss}%
-  \let\BL@@resize=\@firstofone
   \ifBL@noscale\else
-    \def\BL@@resize##1{\resizebox{\tPaperWidth}{!}{##1}}%
-    \setbox\@tempboxa=\hbox{\BL@@resize{\copy\AtBeginShipoutBox}}%
-    \ifdim\ht\@tempboxa>\tPaperHeight
-      \def\BL@@resize##1{\resizebox{!}{\tPaperHeight}{##1}}%
+    \ifdim\oPaperWidth>\z@
+      \setbox\AtBeginShipoutBox=\hbox{\resizebox{\oPaperWidth}{\oPaperHeight}%
+        {\box\AtBeginShipoutBox}}%
+    \else
+      \def\BL@resize##1{\resizebox{\tPaperWidth}{!}{##1}}%
+      \setbox\@tempboxa=\hbox{\BL@resize{\copy\AtBeginShipoutBox}}%
+      \ifdim\ht\@tempboxa>\tPaperHeight
+        \def\BL@resize##1{\resizebox{!}{\tPaperHeight}{##1}}%
+      \fi
     \fi
   \fi
   \setbox\@tempboxa=\vb@xt@\tPaperHeight{%
     \kern\z@\BL@t
-    \hb@xt@\tPaperWidth{\BL@l\BL@@resize{\box\AtBeginShipoutBox}\BL@r}%
+    \hb@xt@\tPaperWidth{\BL@l\BL@resize{\box\AtBeginShipoutBox}\BL@r}%
     \BL@b\kern\z@
   }%
   \setbox\AtBeginShipoutBox=\vbox{%
