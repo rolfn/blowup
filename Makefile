@@ -21,8 +21,16 @@ ARCHNAME = $(MAIN)-$(VERSION).zip
 all : $(MAIN).pdf $(EXAMPLES_PDF)
 
 $(MAIN).pdf : $(MAIN).dtx $(MAIN).sty
-	$(LATEX) $< 
 	$(LATEX) $<
+	if ! test -f $(basename $<).glo ; then touch $(basename $<).glo; fi
+	if ! test -f $(basename $<).idx ; then touch $(basename $<).idx; fi
+	makeindex -s gglo.ist -t $(basename $<).glg -o $(basename $<).gls \
+		$(basename $<).glo
+	makeindex -s gind.ist -t $(basename $<).ilg -o $(basename $<).ind \
+		$(basename $<).idx
+	$(LATEX) $<
+	$(LATEX) $<
+
 
 $(MAIN).sty : $(MAIN).ins $(MAIN).dtx 
 	$(TEX) $<
@@ -42,6 +50,7 @@ clean :
 
 debug :
 	@echo "----------------------------------"
+	@echo $(VERSION)
 	@echo $(ARCHNAME)
 	@echo $(EXAMPLES)
 	@echo $(EXAMPLES_PDF)

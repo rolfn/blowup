@@ -1,17 +1,21 @@
 % \iffalse meta-comment
 %
-% Copyright (C) 2007, 2018-
-% Rolf Niepraschk, Rolf.Niepraschk@gmx.de
-% 
+% Copyright (C) 2007, 2017-2022 by Rolf Niepraschk 
+% ---------------------------------------------------------------------------
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
 % of this license or (at your option) any later version.
 % The latest version of this license is in
 %   http://www.latex-project.org/lppl.txt
 % and version 1.3 or later is part of all distributions of LaTeX
-% version 2003/12/01 or later.
-% 
-% This work has the LPPL maintenance status "author-maintained".
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Rolf Niepraschk. 
+%
+% This work consists of the files blowup.dtx and blowup.ins
+% and the derived filebase blowup.sty.
 %
 % \fi
 %
@@ -19,14 +23,13 @@
 %<*driver>
 \ProvidesFile{blowup.dtx}
 %</driver>
-%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
-%<package>\ProvidesPackage{blowup}[2018/01/02 1.0 Document Scaling (RN)]
+%<package>\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+%<package>\ProvidesPackage{blowup}[2022/09/19 2.0.0 Page scaling (RN)]
 %
 %<*driver>
 \documentclass{ltxdoc}
-\usepackage{array,longtable}
-\IfFileExists{ragged2e.sty}{%
-  \usepackage{ragged2e}}{\let\RaggedRight=\raggedright}
+\usepackage{blowup,array,longtable,ragged2e}
+\let\RaggedRight=\raggedright
 \newcommand{\m}[1]{\mbox{$\langle$\it #1\/$\rangle$}}
 \renewcommand{\arg}[1]{{\ttfamily\string{}\m{#1}{\ttfamily\string}}}
 \EnableCrossrefs
@@ -34,11 +37,13 @@
 \RecordChanges
 \begin{document}
   \DocInput{blowup.dtx}
+  \PrintChanges
+  \PrintIndex
 \end{document}
 %</driver>
 % \fi
 %
-% \CheckSum{504}
+% \CheckSum{510}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -57,46 +62,40 @@
 %   Right brace   \}     Tilde         \~}
 %
 %
-% \changes{v0.1a}{2007/08/14}{Initial version. (RN)}
+% \changes{0.1a}{2007/08/14}{Initial version. (RN)}
+% \changes{2.0.0}{2022/09/19}{Major parts rewritten. (RN)}
 %
-% \GetFileInfo{blowup.dtx}
+% \DoNotIndex{\newcommand,\newenvironment,\z@,\vskip,\hskip,\vss,\hss,\value,
+%  \the,\ifx,\if,\fi,ifdim,\ifodd,\else,\providecommand,\newif,\newlength,\noexpand,
+%  \let,\def,\gdef,\edef,\xdef,\kern,\string,\box,\copy,\csname,\endcsname,
+%  \begingroup,\endgroup,\expandafter,\relax,\@tempboxa,\@tempdima,\@tempdimb,
+%  \@empty,\@firstoftwo,\@ifundefined,\@nil,\@secondoftwo,\@tempswafalse,
+%  \@tempswatrue,\if@tempswa,\@for,\do,\ht,\wd,\dp,\g@addto@macro,\hbox,\vbox,
+%  \hb@xt@,\vb@xt@,\global,\l@addto@macro,\moveright,\BL@tempa,\BL@tempb}
 %
-% \DoNotIndex{\newcommand,\newenvironment}
-% 
-% \newcommand\afterheading{\par\nobreak\@afterheading}
-% \newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
-% 
-%
-% \title{The \textsf{blowup} package\thanks{This document
-%   corresponds to \textsf{blowup}~\fileversion, dated \filedate.}}
-% \author{Rolf Niepraschk \\ \texttt{Rolf.Niepraschk@gmx.de}}
+% \providecommand*{\url}{\texttt}
+% \GetFileInfo{blowup.sty}  
+% \title{The \textsf{blowup} package}
+% \author{Rolf Niepraschk} 
+% \date{Version~\fileversion~(\filedate)}
 %
 % \maketitle
-% 
-%    \begin{abstract}
-%       \noindent
-%       This package only defines the user-level macro \cmd{\blowUp}, 
-%       which can be used to upscale or downscale all pages 
-%       of a document. It is 
-%       similar to the \TeX\ primitive \cmd{\magnification} but more 
-%       accurate and in a user-friendly manner. \cmd{\blowUp} 
-%       may be useful for the creation of posters from a normal-sized 
-%       document and for many kinds of fine adjustments of a ready 
-%       typesetted document (e.\,g., minor changes of scaling and 
-%       position of the pages). 
-%    \end{abstract}
 %
-%    \tableofcontents
+% \section{Introduction}
+%
+% This package only defines the user-level macro \cmd{\blowUp}, which can be 
+% used to scale all pages of a document up or down. It is similar to the \TeX\ 
+% primitive \cmd{\mag}, but more accurate and user-friendly. \cmd{\blowUp} can
+% be useful for creating posters from a normal sized document and for many other 
+% types of fine-tuning of a finished document (e.g., minor scaling changes and 
+% position of the pages).  
 %
 % \section{Usage}
-% Load the package after other packages that affect the paper size 
-% (e.\,g., \textsf{geometry} and \textsf{hyperref}). 
-% Then call the macro \cmd{\blowUp} before |\begin{document}| to scale 
-% the document. \par \medskip \noindent
-%  |\usepackage{blowup}| \par \noindent
-%  \cmd{\blowUp}\arg{key=value} \par \noindent
-%  \vspace{-\baselineskip}
+% The only user macro is \cmd{\blowUp}\arg{key=value}. Call it before 
+% |\begin{document}| to scale all pages of the document:  \par \medskip\noindent
+%  
 %  \setlength\extrarowheight{.2ex}
+%  \newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
 %  \begin{longtable}{@{}lP{.75\linewidth}@{}}
 %    \multicolumn{1}{@{}l}{\textbf{key}} & 
 %    \multicolumn{1}{l@{}}{\textbf{value}} \tabularnewline \hline 
@@ -104,21 +103,22 @@
 %              & |letter|, |legal|, |executive| or a paper size from the 
 %              ISO/DIN paper series A, B, C, D 
 %              (e.\,g., |a8|, |c7|,..., |b1|, |a0|) or a pair of dimensions
-%              in curly brackets (e.\,g., |paper={925mm,1225mm}|) or the 
+%              in curly brackets (e.\,g., |target={925mm,1225mm}|) or the 
 %              letter `x' followed by a scaling factor 
-%              (e.\,g., |paper=x1.414213|). \tabularnewline[.4\baselineskip]
-%    origin    & The paper size of the source document; no scaling to the target 
-%              size. \tabularnewline
+%              (e.\,g., |target=x1.414213|). \tabularnewline[.4\baselineskip]
+%    origin    & Scaled size of the source document: \tabularnewline
 %              & |letter|, |legal|, |executive| or a paper size from the 
 %              ISO/DIN paper series A, B, C, D 
 %              (e.\,g., |a8|, |c7|,..., |b1|, |a0|) or a pair of dimensions
-%              in curly brackets (e.\,g., |paper={925mm,1225mm}|) or the 
+%              in curly brackets (e.\,g., |origin={925mm,1225mm}|) or the 
 %              letter `x' followed by a scaling factor 
-%              (e.\,g., |paper=x1.414213|). \tabularnewline[.4\baselineskip]
+%              (e.\,g., |origin=x1.414213|). \tabularnewline[.4\baselineskip]
 %    landscape & Exchanges paperwidth and paperheight: \tabularnewline
-%              & |true| (the same as no value) or |false|. \tabularnewline[.4\baselineskip]
+%              & |true| (the same as no value) or |false|. 
+%                 \tabularnewline[.4\baselineskip]
 %    noscale   & No scaling of the original paper size: \tabularnewline
-%              & |true| (the same as no value) or |false|. \tabularnewline[.4\baselineskip]
+%              & |true| (the same as no value) or |false|. 
+%                 \tabularnewline[.4\baselineskip]
 %    pos       & Position of the page on the paper: \tabularnewline
 %              & |left| or |right|, |inside| or |outside|, |top| or |bottom| 
 %              (only the first letter is significant; default is 
@@ -134,19 +134,14 @@
 %  \vspace{0\baselineskip}
 %  See also the example documents |blowup-ex?.tex|.
 %
-%    \section{Required Packages} 
-%
-%    The \textsf{blowup} package requires the following packages: 
-%    \textsf{atbegshi}, \textsf{graphics}, \textsf{keyval}, and 
-%    \textsf{typearea}.
-%
-% \StopEventually{\PrintChanges\PrintIndex}
+% \StopEventually{}
 %
 % \section{Implementation}
 %
-%    \begin{macrocode}
+% \iffalse
 %<*package>
-%    \end{macrocode}
+% \fi
+%
 %  Load some packages for utility macros. 
 %    \begin{macrocode}
 \RequirePackage{atbegshi,keyval,graphics}
@@ -158,10 +153,16 @@
     \g@addto@macro\BL@restore@dimens{%
       \csname #1\endcsname\csname BL@#1\endcsname}%
   }%
-  \newcommand*\BL@restore@dimens{}%
 %    \end{macrocode}
+% \begin{macro}{\BL@restore@dimens}
 % Some dimensions changed by \textsf{typearea} must be saved and restored.
 %    \begin{macrocode}
+  \newcommand*\BL@restore@dimens{}%
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+  \BL@save@dimen{paperwidth}%
+  \BL@save@dimen{paperheight}%
   \BL@save@dimen{textwidth}%
   \BL@save@dimen{textheight}%
   \BL@save@dimen{evensidemargin}%
@@ -172,43 +173,54 @@
   \BL@save@dimen{topskip}%
   \BL@save@dimen{footskip}%
   \BL@save@dimen{baselineskip}%
-%    \end{macrocode}
-% \changes{v0.1j}{2008/11/14}{Undefine \cmd{\l@addto@macro}. (RN)}
-% Prevent an error if \cmd{\l@addto@macro} is already defined.
-%    \begin{macrocode}
   \let\l@addto@macro=\relax
-  \RequirePackage{typearea}%
+  \RequirePackage[pagesize=false]{typearea}%
+  \expandafter\let\csname ver@typearea.sty\endcsname=\relax
   \BL@restore@dimens
   \let\BL@save@dimen=\relax
   \let\BL@restore@dimens=\relax
 }
+%    \end{macrocode}
+%
+% \begin{macro}{\vb@xt@}
+%   Similar to \cmd{\hb@xt@}
+%    \begin{macrocode}
 \providecommand*\vb@xt@{\vbox to}
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\tPaperWidth}
 % \begin{macro}{\tPaperHeight}
-% The size of the scaled pages.
+%   The size of the scaled final pages.
 %    \begin{macrocode}
-\newlength\tPaperWidth  \tPaperWidth=\paperwidth
-\newlength\tPaperHeight \tPaperHeight=\paperheight
+\newlength\tPaperWidth
+\newlength\tPaperHeight
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
 % \begin{macro}{\oPaperWidth}
 % \begin{macro}{\oPaperHeight}
-% The size of the original pages.
+%    The size of the original pages.
 %    \begin{macrocode}
 \newlength\oPaperWidth  \oPaperWidth=\z@
 \newlength\oPaperHeight \oPaperHeight=\z@
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
+%
+% \begin{macro}{\BL@resize}
+%   Resizes the shipout box.
 %    \begin{macrocode}
 \newcommand*\BL@resize[1]{#1}
 %    \end{macrocode}
+% \end{macro}
 % \begin{macro}{\BL@scalePage}
-% Scales the output box to the dimension of the new paper size.
+%   The whole scaling process of the the shipout box to the dimension of the 
+%   new paper size.
 %    \begin{macrocode}
 \newcommand*\BL@scalePage{%
+%    \end{macrocode}
+%   Normalize the shipout box
+%    \begin{macrocode}
   \setbox\AtBeginShipoutBox=\vbox{%
     \vskip1in\moveright1in\box\AtBeginShipoutBox}%
   \setbox\AtBeginShipoutBox=\hb@xt@\paperwidth{%
@@ -232,21 +244,26 @@
     \hb@xt@\tPaperWidth{\BL@l\BL@resize{\box\AtBeginShipoutBox}\BL@r}%
     \BL@b\kern\z@
   }%
+%    \end{macrocode}
+%   Denormalize the shipout box
+%    \begin{macrocode}
   \setbox\AtBeginShipoutBox=\vbox{%
     \vskip-1in\moveright-1in\box\@tempboxa}%
 }
 %    \end{macrocode}
 % \end{macro}
+%
 %    \begin{macrocode}
 \newcommand\BL@tempa{}
 \newcommand\BL@tempb{}
 \newcommand*\BL@strip@comma{}
 \def\BL@strip@comma#1,{#1}
 %    \end{macrocode}
+%
 % \begin{macro}{\BL@is@dimen@pair}
-% The parameter two will be executed if the first parameter is 
-% a comma-separated pair of two dimensions. If not the parameter three 
-% will be executed.
+%   The parameter two will be executed if the first parameter is 
+%   a comma-separated pair of two dimensions. If not the parameter three 
+%   will be executed.   
 %    \begin{macrocode}
 \newcommand*\BL@is@dimen@pair[1]{%
   \expandafter\BL@@is@dimen@pair#1,\@nil
@@ -269,14 +286,16 @@
 }
 %    \end{macrocode}
 % \end{macro}
+%
 %    \begin{macrocode}
 \newcommand*\BL@strip@x{}
 \def\BL@strip@x#1x{#1}
 %    \end{macrocode}
+%
 % \begin{macro}{\BL@is@factor}
-% The parameter two will be executed if the first parameter is the 
-% small letter x (`times') immediately followed by a number. If not 
-% the parameter three will be executed.
+%   The parameter two will be executed if the first parameter is the 
+%   small letter x (`times') immediately followed by a number. If not 
+%   the parameter three will be executed.
 %    \begin{macrocode}
 \newcommand*\BL@is@factor[1]{%
   \expandafter\BL@@is@factor#1x\@nil
@@ -297,8 +316,10 @@
 }
 %    \end{macrocode}
 % \end{macro}
+%
+%
 % \begin{macro}{\BL@getDimens}
-% Sets the two dimen registers (|#2| and |#3|) according to parameter |#1|.
+%   Sets the two dimen registers (|#2| and |#3|) according to parameter |#1|.
 %    \begin{macrocode}
 \newcommand*\BL@getDimens[3]{%
   \BL@is@dimen@pair{#1}{%
@@ -319,18 +340,30 @@
 }
 %    \end{macrocode}
 % \end{macro}
-% The key-value definitions for \cmd{\blowUp}.
+%  The key-value definitions for \cmd{\blowUp}:
 %    \begin{macrocode}
 \define@key{BL@}{origin}{%
   \BL@getDimens{#1}{\oPaperWidth}{\oPaperHeight}%
 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \define@key{BL@}{target}{%
   \BL@getDimens{#1}{\tPaperWidth}{\tPaperHeight}%
 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \newif\ifBL@noscale \BL@noscalefalse
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \define@key{BL@}{noscale}[true]{%
   \csname BL@noscale#1\endcsname
 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \newcommand*\BL@l{}
 \newcommand*\BL@r{}
 \newcommand*\BL@i{}
@@ -338,9 +371,11 @@
 \newcommand*\BL@t{}
 \newcommand*\BL@b{}
 %    \end{macrocode}
+%
+%
 % \begin{macro}{\BL@setPos}
-% Modify the macros \cmd{\BL@l}, \cmd{\BL@r} (\cmd{\BL@i}, \cmd{\BL@o}), 
-% \cmd{\BL@t}, and \cmd{\BL@b} for positioning the page on the paper.
+%   Modify the macros \cmd{\BL@l}, \cmd{\BL@r} (\cmd{\BL@i}, \cmd{\BL@o}), 
+%   \cmd{\BL@t}, and \cmd{\BL@b} for positioning the page on the paper.
 %    \begin{macrocode}
 \newcommand\BL@setPos[1]{%
   \def\BL@l{\hss}\def\BL@r{\hss}%
@@ -358,9 +393,6 @@
     \if
   }{%
     \@for\BL@tempa:=#1\do{%
-%    \end{macrocode}
-%  Extract the first letter.
-%    \begin{macrocode}
       \edef\BL@tempb{\expandafter\@car\BL@tempa\@nil}%
       \expandafter\let\csname BL@\BL@tempb \endcsname\relax
     }%
@@ -381,23 +413,37 @@
 }
 %    \end{macrocode}
 % \end{macro}
+%
 %    \begin{macrocode}
 \define@key{BL@}{pos}{%
   \BL@setPos{#1}%
 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \newif\ifBL@landscape \BL@landscapefalse
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \define@key{BL@}{landscape}[true]{%
   \csname BL@landscape#1\endcsname
 }
-\newcommand*\BL@pageInit{}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand*\BL@setup{}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \define@key{BL@}{onepage}[true]{%
   \csname if#1\endcsname
-    \def\BL@pageInit{\gdef\shipout{\setbox\@tempboxa=}}%
+    \def\BL@setup{\gdef\shipout{\deadcycles\z@\setbox\@tempboxa=}}%
   \fi
 }
 %    \end{macrocode}
+%
 % \begin{macro}{\blowUp}
-% The only user-level macro.
+%   The only user-level macro.
 %    \begin{macrocode}
 \newcommand*\blowUp[1]{%
   \setkeys{BL@}{#1}%
@@ -406,60 +452,72 @@
     \global\tPaperWidth=\tPaperHeight
     \global\tPaperHeight=\@tempdima
   \fi
-  \AtBeginShipout{\BL@scalePage}%
+  \AtBeginDocument{%
+    \AtBeginDvi{\BL@pagesize@code{\tPaperWidth}{\tPaperHeight}}%
+    \AtBeginShipout{\BL@setup\BL@scalePage}
+  }%
   \gdef\blowUp##1{%
     \PackageWarning{blowup}{Only the first call of `\string\blowUp'
       \MessageBreak is effective}}%
 }
 %    \end{macrocode}
 % \end{macro}
+%
 %    \begin{macrocode}
-\AtBeginShipout{\BL@pageInit}
 \@onlypreamble\blowUp
-\AtBeginDocument{%
-  \BL@pagesize@specials{\tPaperWidth}{\tPaperHeight}%
-}
 %    \end{macrocode}
-% \begin{macro}{\BL@pagesize@specials}
-% Write pagesize informations to the output file. Depends on \TeX\ 
-% compiler or driver.
+%
+% \begin{macro}{\BL@pagesize@code}
+%   Page size information (depending on the \TeX\ compiler or driver).
 %    \begin{macrocode}
-\RequirePackage{ifxetex,ifluatex,ifpdf,ifvtex} 
-\newcommand*\BL@pagesize@specials[2]{}
+\newcommand*\BL@pagesize@code[2]{}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\RequirePackage{iftex}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \ifluatex
   \PackageInfo{blowup}{Generating code for LuaTeX}%
   \@ifundefined{pagewidth}{%
-    \def\BL@pagesize@specials#1#2{\pdfpagewidth=#1 \pdfpageheight=#2}%
+    \def\BL@pagesize@code#1#2{\global\pdfpagewidth=#1 %
+      \global\pdfpageheight=#2}%
   }{%
-    \def\BL@pagesize@specials#1#2{\pagewidth=#1 \pageheight=#2}% 
+    \def\BL@pagesize@code#1#2{\global\pagewidth=#1 %
+      \global\pageheight=#2}%
   }
 \else
   \ifxetex
     \PackageInfo{blowup}{Generating code for XeTeX}%
-    \def\BL@pagesize@specials#1#2{\@tempdima=#1 \@tempdimb=#2 %
-      \AtBeginDvi{\special{papersize=\the\@tempdima,\the\@tempdimb}}%
-      \pdfpagewidth=#1 \pdfpageheight=#2}%
+    \def\BL@pagesize@code#1#2{\global\pdfpagewidth=#1 %
+      \global\pdfpageheight=#2}%
   \else
     \ifvtex
       \PackageInfo{blowup}{Generating code for VTeX}%
-      \def\BL@pagesize@specials#1#2{\mediawidth=#1 \mediaheight=#2}%
+      \def\BL@pagesize@code#1#2{\global\mediawidth=#1 %
+        \global\mediaheight=#2}%
     \else
       \ifpdf
         \PackageInfo{blowup}{Generating code for pdfTeX}%
-        \def\BL@pagesize@specials#1#2{\pdfpagewidth=#1 \pdfpageheight=#2}%
+        \def\BL@pagesize@code#1#2{\global\pdfpagewidth=#1 %
+          \global\pdfpageheight=#2}%
       \else
         \PackageInfo{blowup}{Generating code for dvips}%
-        \def\BL@pagesize@specials#1#2{\@tempdima=#1 \@tempdimb=#2 %
-          \AtBeginDvi{\special{papersize=\the\@tempdima,\the\@tempdimb}}}%      
+        \def\BL@pagesize@code#1#2{%
+          \@tempdima=#1 \@tempdimb=#2 %
+          \special{papersize=\the\@tempdima,\the\@tempdimb}%
+        }%
       \fi
-    \fi    
+    \fi
   \fi
 \fi
 %    \end{macrocode}
-% \end{macro}
-%    \begin{macrocode}
+%
+% \iffalse
 %</package>
-%    \end{macrocode}
+% \fi
 %
 % \Finale
-%\endinput
+\endinput

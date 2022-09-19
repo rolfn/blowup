@@ -1,25 +1,21 @@
-
-%---------------------------
-% Rolf Niepraschk, Rolf.Niepraschk@gmx.de, 2017-07-28
-
-% lualatex blowup-test.tex
-% or
-% pdflatex blowup-test.tex
-% or
-% latex blowup-test.tex ; dvips blowup-test ; ps2pdf blowup-test.ps
-% or
-% vlatex blowup-test.tex
+% Rolf Niepraschk, 2020-09-19
 %
-% pdfinfo blowup-test.pdf
-
+% Translate to pdf with any TeX compiler and check the page size with
+% 
+%   pdfinfo filename.pdf
+% 
+% or via the properties menu of the pdf viewer
+%
 \listfiles
 \documentclass[a5paper,twoside]{article}
-\usepackage{array,xcolor}
+\usepackage{array}
 
-% Only to show the source page size.
-\usepackage{eso-pic}
-\AddToShipoutPicture{%
-  \AtPageLowerLeft{\textcolor{green!30}{\rule{\paperwidth}{\paperheight}}}%
+% Just to show the page size of the source.
+\usepackage{xcolor,atbegshi}
+\AtBeginShipout{%
+  \AtBeginShipoutUpperLeft{%
+    \textcolor{green!30}{\rule[-\paperheight]{\paperwidth}{\paperheight}}%
+  }%
 }
 
 \renewcommand\familydefault{\sfdefault}
@@ -27,8 +23,8 @@
 \pagestyle{empty}
 
 \usepackage{blowup}% Load "blowup" as last package!
-\blowUp{origin={143mm,202mm},target=a5,pos={o,b}}% top and outside aligned
-% or the same:
+\blowUp{origin={143mm,202mm},target=a5,pos={o,c}}% centered and outside aligned
+% or:
 %  \blowUp{origin=x0.966216,target=a5,pos={o,b}}% top and outside aligned
 
 \begin{document}
@@ -63,4 +59,3 @@ A bit downscaled A5-size document on \mbox{A5-size paper}
 \newpage\null 2nd page\,\dots
 
 \end{document}
-%---------------------------

@@ -1,7 +1,21 @@
-
+% Rolf Niepraschk, 2020-09-19
+%
+% Translate to pdf with any TeX compiler and check the page size with
+% 
+%   pdfinfo filename.pdf
+% 
+% or via the properties menu of the pdf viewer
+%
 \listfiles
 \documentclass[paper=b6,fontsize=11pt,twoside]{scrartcl}
-\usepackage{showframe}
+
+% Just to show the page size of the source.
+\usepackage{xcolor,atbegshi}
+\AtBeginShipout{%
+  \AtBeginShipoutUpperLeft{%
+    \textcolor{green!30}{\rule[-\paperheight]{\paperwidth}{\paperheight}}%
+  }%
+}
 
 \newcommand*\aPage{%
   \Huge
@@ -20,4 +34,3 @@
 \aPage
 
 \end{document}
-%---------------------------
