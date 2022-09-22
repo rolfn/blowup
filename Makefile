@@ -1,4 +1,4 @@
-# Rolf Niepraschk, 2018-01-02, Rolf.Niepraschk@gmx.de
+# Rolf Niepraschk, 2022-09-22, Rolf.Niepraschk@gmx.de
 
 .SUFFIXES : .tex .ltx .dvi .ps .pdf .eps
 
@@ -10,7 +10,7 @@ TEX = tex
 VERSION = $(shell awk '/ProvidesPackage/ {print $$2}' $(MAIN).sty)
 
 EXAMPLES = blowup-ex1.tex blowup-ex2.tex blowup-ex3.tex blowup-ex4.tex \
-  blowup-ex5.tex
+  blowup-ex5.tex blowup-ex6.tex
 EXAMPLES_PDF = $(EXAMPLES:.tex=.pdf) 
 DIST_DIR = $(MAIN)
 DIST_FILES = README.md $(MAIN).dtx $(MAIN).ins $(MAIN).pdf \

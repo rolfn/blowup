@@ -24,7 +24,7 @@
 \ProvidesFile{blowup.dtx}
 %</driver>
 %<package>\NeedsTeXFormat{LaTeX2e}[2020/10/01]
-%<package>\ProvidesPackage{blowup}[2022/09/19 2.0.0 Page scaling (RN)]
+%<package>\ProvidesPackage{blowup}[2022/09/22 2.1.0 Page scaling (RN)]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -43,7 +43,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{510}
+% \CheckSum{546}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -105,20 +105,26 @@
 %              (e.\,g., |a8|, |c7|,..., |b1|, |a0|) or a pair of dimensions
 %              in curly brackets (e.\,g., |target={925mm,1225mm}|) or the 
 %              letter `x' followed by a scaling factor 
-%              (e.\,g., |target=x1.414213|). \tabularnewline[.4\baselineskip]
+%              (e.\,g., |target=x1.414213|). \tabularnewline[.75ex]
 %    origin    & Scaled size of the source document: \tabularnewline
 %              & |letter|, |legal|, |executive| or a paper size from the 
 %              ISO/DIN paper series A, B, C, D 
 %              (e.\,g., |a8|, |c7|,..., |b1|, |a0|) or a pair of dimensions
 %              in curly brackets (e.\,g., |origin={925mm,1225mm}|) or the 
 %              letter `x' followed by a scaling factor 
-%              (e.\,g., |origin=x1.414213|). \tabularnewline[.4\baselineskip]
+%              (e.\,g., |origin=x1.414213|). \tabularnewline[.75ex]
+%  h-mirroring & horizontally mirroring of the final pages \tabularnewline
+%              & |true| (the same as no value) or |false| (default: |false|). 
+%                 \tabularnewline[.75ex]
+%  v-mirroring & vertically mirroring of the final pages \tabularnewline
+%              & |true| (the same as no value) or |false| (default: |false|). 
+%                 \tabularnewline[.75ex]
 %    landscape & Exchanges paperwidth and paperheight: \tabularnewline
-%              & |true| (the same as no value) or |false|. 
-%                 \tabularnewline[.4\baselineskip]
+%              & |true| (the same as no value) or |false| (default: |false|). 
+%                 \tabularnewline[.75ex]
 %    noscale   & No scaling of the original paper size: \tabularnewline
-%              & |true| (the same as no value) or |false|. 
-%                 \tabularnewline[.4\baselineskip]
+%              & |true| (the same as no value) or |false| (default: |false|).
+%                 \tabularnewline[.75ex]
 %    pos       & Position of the page on the paper: \tabularnewline
 %              & |left| or |right|, |inside| or |outside|, |top| or |bottom| 
 %              (only the first letter is significant; default is 
@@ -126,10 +132,12 @@
 %              a pair of dimensions in curly brackets which means the offset  
 %              from the lower left or lower outside corner of the final paper. 
 %              Only meaningful for |noscale=true| and up-scaled paper 
-%              size. \tabularnewline[.4\baselineskip]
-%    onepage   & Suppresses the second page and all following pages: \tabularnewline 
-%              & |true| (the same as no value) or |false|. \tabularnewline
-%              & Useful for creating a one-side paper like a poster.
+%              size. \tabularnewline[.75ex]
+%    onepage   & Suppresses the second page and all following pages: 
+%                 \tabularnewline 
+%              & |true| (the same as no value) or |false| (default: |false|).
+%                 \tabularnewline
+%              & Useful for creating a one-page document like a poster.
 %  \end{longtable}
 %  \vspace{0\baselineskip}
 %  See also the example documents |blowup-ex?.tex|.
@@ -216,6 +224,7 @@
 % \begin{macro}{\BL@scalePage}
 %   The whole scaling process of the the shipout box to the dimension of the 
 %   new paper size.
+%   \changes{2.1.0}{2022/09/22}{New options `h-mirroring' and `v-mirroring' (RN)}
 %    \begin{macrocode}
 \newcommand*\BL@scalePage{%
 %    \end{macrocode}
@@ -244,6 +253,9 @@
     \hb@xt@\tPaperWidth{\BL@l\BL@resize{\box\AtBeginShipoutBox}\BL@r}%
     \BL@b\kern\z@
   }%
+  \ifBL@mirroring
+    \setbox\@tempboxa=\hbox{\scalebox{\BL@h}[\BL@v]{\box\@tempboxa}}%
+  \fi  
 %    \end{macrocode}
 %   Denormalize the shipout box
 %    \begin{macrocode}
@@ -355,11 +367,20 @@
 %
 %    \begin{macrocode}
 \newif\ifBL@noscale \BL@noscalefalse
+\newif\ifBL@mirroring \BL@mirroringfalse
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \define@key{BL@}{noscale}[true]{%
-  \csname BL@noscale#1\endcsname
+  \global\csname BL@noscale#1\endcsname
+}
+\define@key{BL@}{h-mirroring}[true]{%
+  \global\csname BL@mirroring#1\endcsname
+  \gdef\BL@h{-1}%
+}
+\define@key{BL@}{v-mirroring}[true]{%
+  \global\csname BL@mirroring#1\endcsname
+  \gdef\BL@v{-1}%
 }
 %    \end{macrocode}
 %
@@ -370,6 +391,8 @@
 \newcommand*\BL@o{}
 \newcommand*\BL@t{}
 \newcommand*\BL@b{}
+\newcommand*\BL@h{1}
+\newcommand*\BL@v{1}
 %    \end{macrocode}
 %
 %
@@ -446,6 +469,8 @@
 %   The only user-level macro.
 %    \begin{macrocode}
 \newcommand*\blowUp[1]{%
+  \global\tPaperWidth=\paperwidth
+  \global\tPaperHeight=\paperheight
   \setkeys{BL@}{#1}%
   \ifBL@landscape
     \@tempdima=\tPaperWidth
