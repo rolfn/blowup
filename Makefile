@@ -18,7 +18,9 @@ DIST_FILES = README.md $(MAIN).dtx $(MAIN).ins $(MAIN).pdf \
   
 ARCHNAME = $(MAIN)-$(VERSION).zip
 
-all : $(MAIN).pdf $(EXAMPLES_PDF)
+all : $(MAIN).pdf examples
+
+examples : $(EXAMPLES_PDF)
 
 $(MAIN).pdf : $(MAIN).dtx $(MAIN).sty
 	$(LATEX) $<

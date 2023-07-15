@@ -1,4 +1,4 @@
-% Rolf Niepraschk, 2020-09-19
+% Rolf Niepraschk, 2023-07-15
 %
 % Translate to pdf with any TeX compiler and check the page size with
 % 
@@ -10,11 +10,9 @@
 \documentclass[paper=b6,fontsize=11pt,twoside]{scrartcl}
 
 % Just to show the page size of the source.
-\usepackage{xcolor,atbegshi}
-\AtBeginShipout{%
-  \AtBeginShipoutUpperLeft{%
-    \textcolor{green!30}{\rule[-\paperheight]{\paperwidth}{\paperheight}}%
-  }%
+\usepackage{xcolor}
+\AddToHook{shipout/background}{%
+  \put(0,0){\textcolor{green!30}{\rule[-\paperheight]{\paperwidth}{\paperheight}}}%
 }
 
 \newcommand*\aPage{%

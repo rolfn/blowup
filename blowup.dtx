@@ -24,7 +24,7 @@
 \ProvidesFile{blowup.dtx}
 %</driver>
 %<package>\NeedsTeXFormat{LaTeX2e}[2020/10/01]
-%<package>\ProvidesPackage{blowup}[2022/09/22 2.1.0 Page scaling (RN)]
+%<package>\ProvidesPackage{blowup}[2023/07/15 2.2.0 Page scaling (RN)]
 %
 %<*driver>
 \documentclass{ltxdoc}
@@ -152,7 +152,7 @@
 %
 %  Load some packages for utility macros. 
 %    \begin{macrocode}
-\RequirePackage{atbegshi,keyval,graphics}
+\RequirePackage{keyval,graphics}
 \@ifpackageloaded{typearea}{}{%
   \newcommand*\BL@save@dimen[1]{%
     \@ifundefined{BL@#1}{%
@@ -225,24 +225,25 @@
 %   The whole scaling process of the the shipout box to the dimension of the 
 %   new paper size.
 %   \changes{2.1.0}{2022/09/22}{New options `h-mirroring' and `v-mirroring' (RN)}
+%   \changes{2.2.0}{2023/07/15}{Using \LaTeX's \cmd{\ShipoutBox} (RN)}
 %    \begin{macrocode}
 \newcommand*\BL@scalePage{%
 %    \end{macrocode}
 %   Normalize the shipout box
 %    \begin{macrocode}
-  \setbox\AtBeginShipoutBox=\vbox{%
-    \vskip1in\moveright1in\box\AtBeginShipoutBox}%
-  \setbox\AtBeginShipoutBox=\hb@xt@\paperwidth{%
-    \box\AtBeginShipoutBox\hss}%
-  \setbox\AtBeginShipoutBox=\vb@xt@\paperheight{%
-    \box\AtBeginShipoutBox\vss}%
+  \setbox\ShipoutBox=\vbox{%
+    \vskip1in\moveright1in\box\ShipoutBox}%
+  \setbox\ShipoutBox=\hb@xt@\paperwidth{%
+    \box\ShipoutBox\hss}%
+  \setbox\ShipoutBox=\vb@xt@\paperheight{%
+    \box\ShipoutBox\vss}%
   \ifBL@noscale\else
     \ifdim\oPaperWidth>\z@
-      \setbox\AtBeginShipoutBox=\hbox{\resizebox{\oPaperWidth}{\oPaperHeight}%
-        {\box\AtBeginShipoutBox}}%
+      \setbox\ShipoutBox=\hbox{\resizebox{\oPaperWidth}{\oPaperHeight}%
+        {\box\ShipoutBox}}%
     \else
       \def\BL@resize##1{\resizebox{\tPaperWidth}{!}{##1}}%
-      \setbox\@tempboxa=\hbox{\BL@resize{\copy\AtBeginShipoutBox}}%
+      \setbox\@tempboxa=\hbox{\BL@resize{\copy\ShipoutBox}}%
       \ifdim\ht\@tempboxa>\tPaperHeight
         \def\BL@resize##1{\resizebox{!}{\tPaperHeight}{##1}}%
       \fi
@@ -250,7 +251,7 @@
   \fi
   \setbox\@tempboxa=\vb@xt@\tPaperHeight{%
     \kern\z@\BL@t
-    \hb@xt@\tPaperWidth{\BL@l\BL@resize{\box\AtBeginShipoutBox}\BL@r}%
+    \hb@xt@\tPaperWidth{\BL@l\BL@resize{\box\ShipoutBox}\BL@r}%
     \BL@b\kern\z@
   }%
   \ifBL@mirroring
@@ -259,7 +260,7 @@
 %    \end{macrocode}
 %   Denormalize the shipout box
 %    \begin{macrocode}
-  \setbox\AtBeginShipoutBox=\vbox{%
+  \setbox\ShipoutBox=\vbox{%
     \vskip-1in\moveright-1in\box\@tempboxa}%
 }
 %    \end{macrocode}
@@ -467,6 +468,7 @@
 %
 % \begin{macro}{\blowUp}
 %   The only user-level macro.
+%   \changes{2.2.0}{2023/07/15}{Using \LaTeX's shipout hook instead of package `atbegshi'}
 %    \begin{macrocode}
 \newcommand*\blowUp[1]{%
   \global\tPaperWidth=\paperwidth
@@ -479,7 +481,7 @@
   \fi
   \AtBeginDocument{%
     \AtBeginDvi{\BL@pagesize@code{\tPaperWidth}{\tPaperHeight}}%
-    \AtBeginShipout{\BL@setup\BL@scalePage}
+    \AddToHook{shipout}{\BL@setup\BL@scalePage}%
   }%
   \gdef\blowUp##1{%
     \PackageWarning{blowup}{Only the first call of `\string\blowUp'
